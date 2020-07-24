@@ -1,4 +1,4 @@
-//initiate Game STATEs
+//initiate Game STATE
 var PLAY = 1;
 var END = 0;
 var gameState = PLAY;
@@ -13,6 +13,7 @@ var obstacle1,obstacle2,obstacle3,obstacle4 , obstacle5, obstacle6;
 var cloudImage;
 var obstaclesGroup,cloudsGroup
 var score=0;
+var gameOver,restart,gameOverimg,restartimg
 function preload (){
 trex_running = loadAnimation("trex1.png","trex3.png","trex4.png");
   
@@ -25,6 +26,8 @@ trex_collided = loadImage("trex_collided.png");
   obstacle5 = loadImage("obstacle5.png")
 obstacle6=loadImage("obstacle6.png")
   cloudImage=loadImage("cloud.png")
+  gameOverimg = loadImage("gameOver.png")
+  restartimg = loadImage("restart.png")
 }
 function setup() {
   createCanvas(600,200);
@@ -42,11 +45,13 @@ function setup() {
 invisibleground.visible =false
   cloudsGroup=new Group();
   obstaclesGroup = new Group();
-   gameOver = createSprite(200,300);
- restart = createSprite(200,340);
-gameOver.setAnimation("gameOver");
+   gameOver = createSprite(300,100);
+ restart = createSprite(300,140);
+gameOver.addImage(gameOverimg);
+gameOver.visible= false
 gameOver.scale = 0.5;
-restart.setAnimation("restart");
+restart.addImage(restartimg);
+restart.visible = false
 restart.scale = 0.5;
 }
 
@@ -72,9 +77,9 @@ function draw() {
   spawnObstacles();
 
 if(obstaclesGroup.isTouching(trex)){
-  playSound("jump.mp3");
+  
   gameState = END;
-  playSound("die.mp3");
+  
 }
 }
 
@@ -105,7 +110,7 @@ reset();
 //console.log(trex.y);
 
 //stop trex from falling down
-trex.collide(invisibleGround);
+trex.collide(invisibleground);
 
 drawSprites();
 }
@@ -116,12 +121,12 @@ gameState = PLAY;
 gameOver.visible = false;
 restart.visible = false;
 
-ObstaclesGroup.destroyEach();
-CloudsGroup.destroyEach();
+obstaclesGroup.destroyEach();
+cloudsGroup.destroyEach();
 
 trex.changeAnimation("running",trex_running);
 
-count = 0;
+score = 0;
 
 }
 
